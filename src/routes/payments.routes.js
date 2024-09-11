@@ -8,7 +8,7 @@ const router = Router();
 
 router.get('/payments', async(req, res) => {
     try {
-        res.render('/pagos');
+        res.render('payments/list');
     }
     catch(err) {
         res.status(500).json({message: err.message});
@@ -19,14 +19,14 @@ router.get('/payments', async(req, res) => {
 //--------AÑADIR --------------------------------------------//
 
 
-router.get('/categories/add', (req, res) => {
-    res.render('categorias/add');
+router.get('/payments/add', (req, res) => {
+    res.render('payments/add');
 });
 
 
-router.post('/categories/add', async(req, res) => {
+router.post('/payments/add', async(req, res) => {
     try {
-        res.redirect('/categories');
+        res.redirect('/payments');
     }
     catch(err) {
         res.status(500).json({message: err.message});
@@ -37,14 +37,14 @@ router.post('/categories/add', async(req, res) => {
 //--------ACTUALIZAR --------------------------------------------//
 
 
-router.get('/categories/edit', (req, res) => {
-    res.render('categorias/edit');
+router.get('/payments/edit', (req, res) => {
+    res.render('payments/edit');
 });
 
 
-router.post('/categories/edit', async(req, res) => {
+router.post('/payments/edit', async(req, res) => {
     try {
-        res.redirect('/categories');
+        res.redirect('/payments');
     }
     catch(err) {
         res.status(500).json({message: err.message});
