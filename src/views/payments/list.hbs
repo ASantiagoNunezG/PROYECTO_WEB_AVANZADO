@@ -1,0 +1,44 @@
+<div class="container" style="margin-top:70px ;">
+    <div class="row mt-5">
+        <h3 class="text-center text-uppercase p-2">Listado de pagos</h3>
+
+
+        <div style="padding: 10px;">
+        <button class="btn btn-danger"><a class="nav-link  link-light" aria-current="page" href="/payments/add">Nuevo pago</a></button>
+        </div>
+
+        <table class="table text-start">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col" class="col-1">ID</th>
+                    <th scope="col" class="col-3">TIPO DE PAGO</th>
+                    <th scope="col" class="col-2">FECHA DE PAGO</th>
+                    <th scope="col" class="col-2">HORA DE PAGO</th>
+                    <th scope="col" class="col-2">ESTADO</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+               
+                <tr>
+                    <td>1</td>
+                    <td>Tarjeta de crédito o débito</td>
+                    <td>10/09/24</td>
+                    <td>16:00</td>
+                    <td>Cancelado</td>
+                    <td>
+                        <div class="text-end">
+                            <a href="/payments/edit" class="btn btn-warning p-2">
+                                <i class="fa-solid fa-pencil"></i>Actualizar</a>
+
+
+                            <a href="#" class="btn btn-danger p-2">
+                                <i class="fa-solid fa-trash"></i>Eliminar</a>
+                        </div>
+                    </td>
+                </tr>
+               
+            </tbody>
+        </table>
+    </div>
+</div>
