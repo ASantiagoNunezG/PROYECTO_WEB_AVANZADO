@@ -1,0 +1,51 @@
+<div class="container" style="margin-top:70px ;">
+    <div class="row mt-5">
+        <h3 class="text-center text-uppercase p-2">Listado de tipos de entregas</h3>
+
+
+        <div style="padding: 10px;">
+        <button class="btn btn-danger"><a class="nav-link  link-light" aria-current="page" href="/types-deliveries/add">Nuevo tipo de entrega</a></button>
+        </div>
+
+        <table class="table text-start">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col" class="col-1">ID</th>
+                    <th scope="col" class="col-3">NOMBRE</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Sin delivery</td>
+                    <td>
+                        <div class="text-end">
+                            <a href="/types-deliveries/edit" class="btn btn-warning p-2">
+                                <i class="fa-solid fa-pencil"></i>Actualizar</a>
+
+
+                            <a href="#" class="btn btn-danger p-2">
+                                <i class="fa-solid fa-trash" onclick="confirmDelete()"></i>Eliminar</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr></tr>
+                    <td>2</td>
+                    <td>Delivery-Rappi</td>
+                    <td>
+                        <div class="text-end">
+                            <a href="/types-deliveries/edit" class="btn btn-warning p-2">
+                                <i class="fa-solid fa-pencil"></i>Actualizar</a>
+
+
+                            <a href="#" class="btn btn-danger p-2">
+                                <i class="fa-solid fa-trash" onclick="confirmDelete()"></i>Eliminar</a>
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -9,6 +9,9 @@ import userRoutes from './routes/user.routes.js';
 import paymentsRoutes from './routes/payments.routes.js';
 import typesPaymentRoutes from './routes/typesPayment.routes.js';
 import specificationsRoutes from './routes/specifications.routes.js';
+import shopsRoutes from './routes/shops.routes.js';   
+import deliveriesRoutes from './routes/deliveries.routes.js'
+import typesDeliveriesRoutes from './routes/typesDeliveries.routes.js'
 
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -40,6 +43,9 @@ app.use(userRoutes);
 app.use(paymentsRoutes);
 app.use(typesPaymentRoutes);
 app.use(specificationsRoutes);
+app.use(shopsRoutes);
+app.use(deliveriesRoutes);
+app.use(typesDeliveriesRoutes);
 
 app.use(express.static(join(__dirname, 'public')));
 
