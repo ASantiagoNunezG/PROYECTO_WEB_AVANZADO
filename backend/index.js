@@ -18,7 +18,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 app.set('port', process.env.PORT || 3000);
 
-app.set('views', join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '../frontend/src/app/views'));
 
 app.engine('.hbs', engine({
     defaultLayout: 'main',
