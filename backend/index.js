@@ -13,9 +13,11 @@ import shopsRoutes from './routes/shops.routes.js';
 import deliveriesRoutes from './routes/deliveries.routes.js'
 import typesDeliveriesRoutes from './routes/typesDeliveries.routes.js'
 
+//Iniciar
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+//Configuraciones
 app.set('port', process.env.PORT || 3000);
 
 app.set('views', path.join(__dirname, '../frontend/src/app/views'));
@@ -29,16 +31,21 @@ app.engine('.hbs', engine({
 
 app.set('view engine', '.hbs');
 
+//Middlewares
 app.use(morgan('dev'));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+//Rutas
 app.get('/', (req, res) => {
     res.render('index');
 });
 
-// RUTAS
+//Archivos públicos
+app.use(express.static(join(__dirname, 'public')));
+
+// Rutas
 app.use(userRoutes);
 app.use(paymentsRoutes);
 app.use(typesPaymentRoutes);
@@ -49,4 +56,5 @@ app.use(typesDeliveriesRoutes);
 
 app.use(express.static(join(__dirname, 'public')));
 
+//Run server
 app.listen(app.get('port'), () => console.log('Cargando el puerto: ', app.get('port')));
