@@ -1,14 +1,14 @@
 import {Router} from 'express'
-
+import pool from '../config/database.js'
 
 const router = Router();
 
 
 //--------LISTADO--------------------------------------------//
 
-router.get('/types-payment', async(req, res) => {
+router.get('/payment-type', async(req, res) => {
     try {
-        res.render('types-payment/list');
+        res.render('payment-type/list');
     }
     catch(err) {
         res.status(500).json({message: err.message});
@@ -19,14 +19,14 @@ router.get('/types-payment', async(req, res) => {
 //--------AÑADIR --------------------------------------------//
 
 
-router.get('/types-payment/add', (req, res) => {
-    res.render('types-payment/add');
+router.get('/payment-type/add', (req, res) => {
+    res.render('payment-type/add');
 });
 
 
-router.post('/types-payment/add', async(req, res) => {
+router.post('/payment-type/add', async(req, res) => {
     try {
-        res.redirect('/types-payment');
+        res.redirect('/payment-type');
     }
     catch(err) {
         res.status(500).json({message: err.message});
@@ -37,14 +37,14 @@ router.post('/types-payment/add', async(req, res) => {
 //--------ACTUALIZAR --------------------------------------------//
 
 
-router.get('/types-payment/edit', (req, res) => {
-    res.render('types-payment/edit');
+router.get('/payment-type/edit', (req, res) => {
+    res.render('payment-type/edit');
 });
 
 
-router.post('/types-payment/edit', async(req, res) => {
+router.post('/payment-type/edit', async(req, res) => {
     try {
-        res.redirect('/types-payment');
+        res.redirect('/payment-type');
     }
     catch(err) {
         res.status(500).json({message: err.message});

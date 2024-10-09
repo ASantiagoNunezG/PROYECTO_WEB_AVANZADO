@@ -1,0 +1,26 @@
+/* styles.css */
+
+#wrapper {
+    display: flex;
+    width: 100%;
+  }
+  
+  #sidebar-wrapper {
+    min-height: 100vh;
+    padding: 48px 0 0; /* Espaciado superior para el título */
+  }
+  
+  .list-group-item {
+    color: #333; /* Color del texto */
+  }
+  
+  .list-group-item:hover {
+    background-color: #007bff; /* Color de fondo al pasar el mouse */
+    color: white; /* Color del texto al pasar el mouse */
+  }
+  
+  #page-content-wrapper {
+    width: 100%;
+    padding: 20px; /* Espaciado interior del contenido */
+  }
+  

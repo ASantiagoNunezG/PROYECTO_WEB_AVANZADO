@@ -1,7 +1,6 @@
 {
   "name": "proyecto_web_avanzado",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -15,6 +14,9 @@
     "express-handlebars": "^8.0.1",
     "morgan": "^1.10.0",
     "mysql2": "^3.11.3",
-    "nodemon": "^3.1.7"
-  }
+    "nodemon": "^3.1.7",
+    "sequelize": "^6.37.4"
+  },
+  "devDependencies": {},
+  "description": ""
 }

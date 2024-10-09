@@ -123,3 +123,52 @@ ADD CONSTRAINT fk_payment_pt FOREIGN KEY (payment_type_id) REFERENCES payment_ty
 ALTER TABLE delivery
 ADD CONSTRAINT fk_delivery_dt FOREIGN KEY (delivery_type_id) REFERENCES delivery_type(delivery_type_id),
 ADD CONSTRAINT fk_delivery_shop FOREIGN KEY (shop_id) REFERENCES shop(shop_id);
+
+-- Insertar un rol
+INSERT INTO role (name) VALUES ('Admin');
+
+-- Insertar un usuario
+INSERT INTO user (role_id, name, lastname, email, password, address) 
+VALUES (1, 'Juan', 'Pérez', 'juan.perez@example.com', 'password123', 'Calle Falsa 123');
+
+-- Insertar una marca
+INSERT INTO brand (name) VALUES ('MarcaEjemplo');
+
+-- Insertar un proveedor
+INSERT INTO provider (name, phone) VALUES ('ProveedorEjemplo', '123456789');
+
+-- Insertar una categoría
+INSERT INTO category (name) VALUES ('Electrónica');
+
+-- Insertar un producto
+INSERT INTO product (provider_id, category_id, brand_id, name, price, description, stock) 
+VALUES (1, 1, 1, 'ProductoEjemplo', 99.99, 'Descripción del producto ejemplo.', 50);
+
+-- Insertar una especificación
+INSERT INTO specification (name, content) VALUES ('EspecificaciónEjemplo', 'Contenido de la especificación ejemplo.');
+
+-- Insertar un detalle de especificación
+INSERT INTO specification_detail (specification_id, product_id) VALUES (1, 1);
+
+
+-- Insertar un tipo de pago
+INSERT INTO payment_type (name) VALUES ('Tarjeta de Crédito');
+
+-- Insertar un pago
+INSERT INTO payment (payment_type_id, state, payment_date, payment_hour) 
+VALUES (1, 'completed', '2024-10-08', '10:00:00');
+
+-- Insertar un tipo de entrega
+INSERT INTO delivery_type (name) VALUES ('Envío estándar');
+
+-- Insertar una tienda
+INSERT INTO shop (name, address) VALUES ('TiendaEjemplo', 'Av. Principal 456');
+
+-- Insertar una entrega
+INSERT INTO delivery (delivery_type_id, shop_id, state, delivery_date, delivery_hour) 
+VALUES (1, 1, 'in transit', '2024-10-08', '12:00:00');
+
+-- Insertar una venta
+INSERT INTO sell (user_id, payment_id, delivery_id, state, final_price, delivery_commision, sell_date) 
+VALUES (1, 1, 1, 'completed', 150.75, 5.00, '2024-10-08');
+
