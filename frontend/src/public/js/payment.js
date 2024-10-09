@@ -7,8 +7,8 @@ document.getElementById('addSaleForm').addEventListener('submit', function(event
         idpay: document.getElementById('idpay').value,
         iddel: document.getElementById('iddel').value,
         state: document.getElementById('state').value,
-        fpri: document.getElementById('fpri').value,
-        delcom: document.getElementById('delcom').value,
+        fpri: parseFloat(document.getElementById('fpri').value).toFixed(2), 
+        delcom: parseFloat(document.getElementById('delcom').value).toFixed(2), 
         date: document.getElementById('date').value
     };
 
@@ -43,8 +43,8 @@ function openEditModal(id, idcli, idpay, iddel, state, fpri, delcom, date) {
     document.getElementById('editPay').value = idpay;
     document.getElementById('editDel').value = iddel;
     document.getElementById('editSta').value = state;
-    document.getElementById('editFpri').value = fpri;
-    document.getElementById('editDcom').value = delcom;
+    document.getElementById('editFpri').value = fpri.toFixed(2); 
+    document.getElementById('editDcom').value = delcom.toFixed(2); 
 
     const formattedDate = new Date(date).toISOString().split('T')[0];
     document.getElementById('editDate').value = formattedDate;
@@ -52,7 +52,6 @@ function openEditModal(id, idcli, idpay, iddel, state, fpri, delcom, date) {
     const editModal = new bootstrap.Modal(document.getElementById('editSaleModal'));
     editModal.show();
 }
-
 
 // Manejar el envío del formulario de edición
 document.getElementById('editSaleForm').addEventListener('submit', function(event) {
@@ -65,8 +64,8 @@ document.getElementById('editSaleForm').addEventListener('submit', function(even
         idpay: document.getElementById('editPay').value,
         iddel: document.getElementById('editDel').value,
         state: document.getElementById('editSta').value,
-        fpri: document.getElementById('editFpri').value,
-        delcom: document.getElementById('editDcom').value,
+        fpri: parseFloat(document.getElementById('editFpri').value).toFixed(2), 
+        delcom: parseFloat(document.getElementById('editDcom').value).toFixed(2), 
         date: document.getElementById('editDate').value
     };
 
@@ -90,6 +89,7 @@ document.getElementById('editSaleForm').addEventListener('submit', function(even
         }
     });
 });
+
 // Función para eliminar una venta
 function deleteSale(id) {
     Swal.fire({
@@ -116,5 +116,3 @@ function deleteSale(id) {
         }
     });
 }
-
-

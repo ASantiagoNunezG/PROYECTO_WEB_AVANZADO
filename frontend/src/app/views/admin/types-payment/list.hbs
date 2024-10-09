@@ -1,38 +1,157 @@
-<div class="container" style="margin-top:70px ;">
-    <div class="row mt-5">
-        <h3 class="text-center text-uppercase p-2">Listado de tipos de pagos</h3>
+<div class="container mt-5 pt-5">
+    <h1 class="text-center">Lista de Ventas</h1>
 
+    <div class="mb-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSaleModal">Agregar Venta</button>
+    </div>
 
-        <div style="padding: 10px;">
-        <button class="btn btn-danger"><a class="nav-link  link-light" aria-current="page" href="/types-payment/add">Nuevo tipo de pago</a></button>
-        </div>
-
-        <table class="table text-start">
-            <thead>
-                <tr class="table-dark">
-                    <th scope="col" class="col-1">ID</th>
-                    <th scope="col" class="col-3">NOMBRE</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-               
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Tipo de pago</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora</th>
+                <th scope="col"></th> 
+            </tr>
+        </thead>
+        <tbody>
+            {{#each sells}}
                 <tr>
-                    <td>1</td>
-                    <td>Tarjeta de crédito o débito</td>
+                    <td>{{this.sell_id}}</td>
+                    <td>{{formatDate this.sell_date}}</td>
+                    <td>{{this.cliente}}</td>
+                    <td>{{this.metodo_pago}}</td>
+                    <td>{{this.tipo_entrega}}</td>
+                    <td>S/ {{this.final_price}}</td>
+                    <td>S/ {{this.delivery_commision}}</td>
+                    <td>{{this.state}}</td>
                     <td>
-                        <div class="text-end">
-                            <a href="/types-payment/edit" class="btn btn-warning p-2">
-                                <i class="fa-solid fa-pencil"></i>Actualizar</a>
-
-
-                            <a href="#" class="btn btn-danger p-2">
-                                <i class="fa-solid fa-trash"></i>Eliminar</a>
-                        </div>
+                        <button class="btn btn-warning btn-sm" 
+                                onclick="openEditModal(
+                                    {{this.sell_id}}, 
+                                    {{this.user_id}}, 
+                                    {{this.payment_id}}, 
+                                    {{this.delivery_id}}, 
+                                    '{{this.state}}', 
+                                    {{this.final_price}}, 
+                                    {{this.delivery_commision}}, 
+                                    '{{this.sell_date}}'
+                                )">
+                            Editar
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteSale({{this.sell_id}})">Eliminar</button>
                     </td>
                 </tr>
-               
-            </tbody>
-        </table>
+            {{else}}
+                <tr>
+                    <td colspan="9" class="text-center">No hay ventas registradas.</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal para agregar venta -->
+<div class="modal fade" id="addSaleModal" tabindex="-1" aria-labelledby="addSaleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSaleModalLabel">Agregar Nueva Venta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addSaleForm">
+                    <div class="mb-3">
+                        <label for="fecha" class="form-label">Cliente</label>
+                        <input type="number" class="form-control" id="idcli" name="idcli" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Pago</label>
+                        <input type="number" class="form-control" id="idpay" name="idpay" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="total" class="form-label">Delivery</label>
+                        <input type="number" class="form-control" id="iddel" name="iddel" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="user_id" class="form-label">Estado</label>
+                        <input type="text" class="form-control" id="state" name="state" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="payment_id" class="form-label">Precio final</label>
+                        <input type="number" class="form-control" id="fpri" name="fpri" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="delivery_id" class="form-label">Comisión de delivery</label>
+                        <input type="number" class="form-control" id="delcom" name="delcom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="delivery_commisio" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Agregar Venta</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Modal para editar venta -->
+<div class="modal fade" id="editSaleModal" tabindex="-1" aria-labelledby="editSaleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editSaleModalLabel">Editar Venta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editSaleForm">
+                    <input type="hidden" id="editSaleId" name="sell_id">
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Cliente</label>
+                        <input type="number" class="form-control" id="editClient" name="idcli" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Pago</label>
+                        <input type="number" class="form-control" id="editPay" name="idpay" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Delivery</label>
+                        <input type="number" class="form-control" id="editDel" name="iddel" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Estado</label>
+                        <input type="text" class="form-control" id="editSta" name="state" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Precio final</label>
+                        <input type="number" class="form-control" id="editFpri" name="fpri" required step="0.01" min="0">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Comisión de delivery</label>
+                        <input type="number" class="form-control" id="editDcom" name="delcom" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="editDate" name="date" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="/js/sell.js"></script>

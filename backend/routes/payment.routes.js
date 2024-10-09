@@ -1,57 +1,83 @@
-import {Router} from 'express'
-
+import { Router } from 'express';
+import pool from '../config/database.js';
 
 const router = Router();
 
-
-//--------LISTADO--------------------------------------------//
-
-router.get('/payments', async(req, res) => {
+// Obtener todas las ventas
+router.get('/pagos', async (req, res) => {
     try {
-        res.render('payments/list');
-    }
-    catch(err) {
-        res.status(500).json({message: err.message});
+        const [result] = await pool.query(`
+            SELECT 
+                p.payment_id,
+                p.state,
+                p.payment_type_id,
+                p.payment_date,
+                p.payment_hour,
+                pt.name AS metodo_pago 
+            FROM payment p
+            LEFT JOIN payment_type pt ON p.payment_type_id = pt.payment_type_id
+        `);
+        res.render('admin/payments/list', { sells: result });
+    } catch (err) {
+        console.error('Error al listar pagos:', err);
+        res.status(500).json({ message: err.message });
     }
 });
 
+// Crear un pago
+router.post('/payment/create', async (req, res) => {
+    const { payment_type_id, state, payment_date, payment_hour } = req.body; 
+    console.log('Datos recibidos:', req.body); 
 
-//--------AÑADIR --------------------------------------------//
-
-
-router.get('/payments/add', (req, res) => {
-    res.render('payments/add');
-});
-
-
-router.post('/payments/add', async(req, res) => {
     try {
-        res.redirect('/payments');
-    }
-    catch(err) {
-        res.status(500).json({message: err.message});
+        const [result] = await pool.query(
+            'INSERT INTO payment (payment_type_id, state, payment_date, payment_hour) VALUES (?, ?, ?, ?)', 
+            [payment_type_id, state, payment_date, payment_hour]
+        );
+        res.status(201).json({ message: 'Pago agregado', id: result.insertId });
+    } catch (err) {
+        console.error('Error al insertar pago:', err);  
+        res.status(500).json({ message: err.message });
     }
 });
 
+// Editar un pago
+router.put('/payment/update/:id', async (req, res) => {
+    console.log('Datos recibidos:', req.body); 
+    const { payment_type_id, state, payment_date, payment_hour } = req.body;
+    const { id } = req.params;
 
-//--------ACTUALIZAR --------------------------------------------//
-
-
-router.get('/payments/edit', (req, res) => {
-    res.render('payments/edit');
-});
-
-
-router.post('/payments/edit', async(req, res) => {
     try {
-        res.redirect('/payments');
-    }
-    catch(err) {
-        res.status(500).json({message: err.message});
+        const [result] = await pool.query(
+            'UPDATE payment SET payment_type_id = ?, state = ?, payment_date = ?, payment_hour = ? WHERE payment_id = ?', 
+            [payment_type_id, state, payment_date, payment_hour, id]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Pago no encontrado' });
+        }
+
+        res.status(200).json({ message: 'Pago actualizado correctamente' });
+    } catch (err) {
+        console.error('Error al actualizar pago:', err);
+        res.status(500).json({ message: err.message });
     }
 });
 
-
-
+// Eliminar un pago
+router.delete('/payment/delete/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const [result] = await pool.query('DELETE FROM payment WHERE payment_id = ?', [id]); 
+        if (result.affectedRows > 0) {
+            res.json({ message: 'Pago eliminado' });
+        } else {
+            res.status(404).json({ message: 'Pago no encontrado' });
+        }
+    } catch (err) {
+        console.error('Error al eliminar pago:', err);  
+        res.status(500).json({ message: err.message });
+    }
+});
 
 export default router;
