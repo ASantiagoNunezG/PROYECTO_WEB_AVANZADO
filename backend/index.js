@@ -10,17 +10,17 @@ import paymentsRoutes from './routes/payments.routes.js';
 import typesPaymentRoutes from './routes/typesPayment.routes.js';
 import specificationsRoutes from './routes/specifications.routes.js';
 import shopsRoutes from './routes/shops.routes.js';   
-import deliveriesRoutes from './routes/deliveries.routes.js'
-import typesDeliveriesRoutes from './routes/typesDeliveries.routes.js'
+import deliveriesRoutes from './routes/deliveries.routes.js';
+import typesDeliveriesRoutes from './routes/typesDeliveries.routes.js';
 
-//Iniciar
+// Iniciar
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-//Configuraciones
+// Configuraciones
 app.set('port', process.env.PORT || 3000);
 
-app.set('views', path.join(__dirname, '../frontend/src/app/views'));
+app.set('views', join(__dirname, '../frontend/src/app/views')); // Asegúrate de usar join aquí
 
 app.engine('.hbs', engine({
     defaultLayout: 'main',
@@ -31,21 +31,16 @@ app.engine('.hbs', engine({
 
 app.set('view engine', '.hbs');
 
-//Middlewares
+// Middlewares
 app.use(morgan('dev'));
-
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-//Rutas
+// Rutas
 app.get('/', (req, res) => {
     res.render('index');
 });
 
-//Archivos públicos
-app.use(express.static(join(__dirname, 'public')));
-
-// Rutas
 app.use(userRoutes);
 app.use(paymentsRoutes);
 app.use(typesPaymentRoutes);
@@ -54,7 +49,8 @@ app.use(shopsRoutes);
 app.use(deliveriesRoutes);
 app.use(typesDeliveriesRoutes);
 
+// Archivos públicos
 app.use(express.static(join(__dirname, 'public')));
 
-//Run server
+// Run server
 app.listen(app.get('port'), () => console.log('Cargando el puerto: ', app.get('port')));
