@@ -5,6 +5,7 @@ const pool = createPool({
     port: 3306, 
     user: 'root',
     password: '',
+    //password: '12345',
     database: 'tec',
 });
 
