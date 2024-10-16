@@ -102,38 +102,6 @@ document.getElementById('editDeliveryForm').addEventListener('submit', function(
     });
 });
 
-
-document.getElementById('editDeliveryForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const idDelivery = document.getElementById('editDeliveryId').value;
-
-    const formData = {
-        delivery_type_id: document.getElementById('editDeliveryType').value,
-        shop_id: document.getElementById('editShop').value,
-        state: document.getElementById('editState').value,
-        delivery_date: document.getElementById('editDeliveryDate').value,
-        delivery_hour: document.getElementById('editDeliveryHour').value
-    };
-
-    fetch(`/deliveries/update/${idDelivery}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-    })
-    .then(response => {
-        if (response.ok) {
-            Swal.fire('Actualizado!', 'La entrega ha sido actualizada', 'success').then(() => {
-                location.reload();
-            });
-        } else {
-            Swal.fire('Error!', 'No se pudo actualizar la entrega.', 'error');
-        }
-    });
-});
-
 function deleteDelivery(idDelivery) {
     Swal.fire({
         title: '¿Estás seguro?',

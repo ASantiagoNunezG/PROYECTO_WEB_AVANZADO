@@ -1,29 +1,35 @@
 <div class="d-flex" id="wrapper">
 
-  <div class="bg-light border-right" id="sidebar-wrapper">
-    <div class="sidebar-heading">Mi Aplicación</div>
-    <div class="list-group list-group-flush">
-        <!-- Harumi -->
-      <a href="/ventas" class="list-group-item list-group-item-action bg-light">Ventas</a>
-      <a href="/detalle-venta" class="list-group-item list-group-item-action bg-light">Detalle de ventas</a>
-      <a href="/pagos" class="list-group-item list-group-item-action bg-light">Pagos</a>
-      <a href="/tipos-pagos" class="list-group-item list-group-item-action bg-light">Tipos de pagos</a>
-
-      <a href="/productos" class="list-group-item list-group-item-action bg-light">Productos</a>
-      <a href="/usuarios" class="list-group-item list-group-item-action bg-light">Usuarios</a>
-      <a href="/reports" class="list-group-item list-group-item-action bg-light">Reportes</a>
-
-      <!-- Nuñez-->
-      <a href="/shops" class="list-group-item list-group-item-action bg-light">Tiendas</a>
-      <a href="/types-deliveries" class="list-group-item list-group-item-action bg-light">Tipos de Entregas</a>
-      <a href="/deliveries" class="list-group-item list-group-item-action bg-light">Entregas</a>
-      
-      <a href="/settings" class="list-group-item list-group-item-action bg-light">Configuraciones</a>
-      <a href="/logout" class="list-group-item list-group-item-action bg-light">Cerrar Sesión</a>
+  <div class="p-3 w-25 border-right text-left" id="sidebar-wrapper">
+    <div class="sidebar-heading my-4 px-5">Mi Aplicación</div>
+    <div class="list-group">
+      <a href="/ventas" class="list-group-item list-group-item-action rounded mb-2 px-5 border-0 {{#if (eq activeRoute "/ventas")}}active{{/if}}">
+        <i class="fas fa-chart-line me-2"></i> Ventas
+      </a>
+      <a href="/detalle-venta" class="list-group-item list-group-item-action rounded mb-2 px-5 border-0 {{#if (eq activeRoute "/detalle-venta")}}active{{/if}}">
+        <i class="fas fa-receipt me-2"></i> Detalle de ventas
+      </a>
+      <a href="/pagos" class="list-group-item list-group-item-action rounded mb-2 px-5 border-0 {{#if (eq activeRoute "/pagos")}}active{{/if}}">
+        <i class="fas fa-credit-card me-2"></i> Pagos
+      </a>
+      <a href="/tipos-pagos" class="list-group-item list-group-item-action rounded mb-2 px-5 border-0 {{#if (eq activeRoute "/tipos-pagos")}}active{{/if}}">
+        <i class="fas fa-money-bill-wave me-2"></i> Tipos de pagos
+      </a>
+      <a href="/shops" class="list-group-item list-group-item-action rounded mb-2 px-5 border-0 {{#if (eq activeRoute "/shops")}}active{{/if}}">
+        <i class="fa-solid fa-store me-2"></i> Tiendas
+      </a>
+      <a href="/types-deliveries" class="list-group-item list-group-item-action rounded mb-2 px-5 border-0 {{#if (eq activeRoute "/types-deliveries")}}active{{/if}}">
+        <i class="fas fa-truck me-2"></i> Tipos de Entregas
+      </a>
+      <a href="/deliveries" class="list-group-item list-group-item-action rounded mb-2 px-5 border-0 {{#if (eq activeRoute "/deliveries")}}active{{/if}}">
+        <i class="fas fa-box-open me-2"></i> Entregas
+      </a>
+      <a href="/logout" class="list-group-item list-group-item-action rounded mb-2 px-5 border-0 {{#if (eq activeRoute "/logout")}}active{{/if}}">
+        <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+      </a>
     </div>
   </div>
 
-  <!-- Page Content -->
   <div id="page-content-wrapper">
     <div class="container-fluid">
       {{{body}}} 

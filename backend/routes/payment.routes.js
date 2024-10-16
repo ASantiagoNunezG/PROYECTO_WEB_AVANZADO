@@ -6,7 +6,8 @@ const router = Router();
 // Obtener todas las ventas
 router.get('/pagos', async (req, res) => {
     try {
-        const [result] = await pool.query(`
+        const [paymentTypes] = await pool.query(`SELECT * FROM payment_type`);
+        const [payments] = await pool.query(`
             SELECT 
                 p.payment_id,
                 p.state,
@@ -17,7 +18,18 @@ router.get('/pagos', async (req, res) => {
             FROM payment p
             LEFT JOIN payment_type pt ON p.payment_type_id = pt.payment_type_id
         `);
-        res.render('admin/payments/list', { sells: result });
+        payments.forEach(payment => {
+            const paymentDate = new Date(payment.payment_date);
+            payment.payment_date = paymentDate.toISOString().split('T')[0]; 
+        
+            const paymentHour = payment.payment_hour;
+            if (paymentHour) {
+                payment.payment_hour = paymentHour.slice(0, 5); 
+            } else {
+                payment.payment_hour = '';
+            }
+        });
+        res.render('admin/payments/list', { payments, paymentTypes, activeRoute: req.path });
     } catch (err) {
         console.error('Error al listar pagos:', err);
         res.status(500).json({ message: err.message });
@@ -34,6 +46,7 @@ router.post('/payment/create', async (req, res) => {
             'INSERT INTO payment (payment_type_id, state, payment_date, payment_hour) VALUES (?, ?, ?, ?)', 
             [payment_type_id, state, payment_date, payment_hour]
         );
+        
         res.status(201).json({ message: 'Pago agregado', id: result.insertId });
     } catch (err) {
         console.error('Error al insertar pago:', err);  

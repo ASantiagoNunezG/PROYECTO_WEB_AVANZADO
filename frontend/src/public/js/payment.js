@@ -1,20 +1,17 @@
 // Manejar el envío del formulario de agregar
-document.getElementById('addSaleForm').addEventListener('submit', function(event) {
+document.getElementById('addPaymentForm').addEventListener('submit', function(event) {
     event.preventDefault(); 
 
     const formData = {
-        idcli: document.getElementById('idcli').value,
-        idpay: document.getElementById('idpay').value,
-        iddel: document.getElementById('iddel').value,
+        payment_type_id: document.getElementById('payType').value,
         state: document.getElementById('state').value,
-        fpri: parseFloat(document.getElementById('fpri').value).toFixed(2), 
-        delcom: parseFloat(document.getElementById('delcom').value).toFixed(2), 
-        date: document.getElementById('date').value
+        payment_date: document.getElementById('date').value,
+        payment_hour: document.getElementById('hour').value,
     };
 
     console.log('Datos del formulario:', formData);
 
-    fetch('/sell/create', {
+    fetch('/payment/create', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'  
@@ -24,74 +21,99 @@ document.getElementById('addSaleForm').addEventListener('submit', function(event
     .then(response => {
         console.log('Respuesta del servidor:', response);
         if (response.ok) {
-            Swal.fire('Agregado!', 'La venta ha sido agregada.', 'success')
+            Swal.fire('Agregado!', 'El pago ha sido agregada.', 'success')
                 .then(() => {
                     location.reload(); 
                 });
         } else {
-            Swal.fire('Error!', 'No se pudo agregar la venta.', 'error');
+            Swal.fire('Error!', 'No se pudo agregar el pago.', 'error');
         }
     });
 });
 
-// Función para abrir el modal de edición y cargar datos
-function openEditModal(id, idcli, idpay, iddel, state, fpri, delcom, date) {
-    console.log(`ID: ${id}, Cliente: ${idcli}, Pago: ${idpay}, Delivery: ${iddel}, Estado: ${state}, Precio final: ${fpri}, Comisión: ${delcom}, Fecha: ${date}`);
-    
-    document.getElementById('editSaleId').value = id;
-    document.getElementById('editClient').value = idcli;
-    document.getElementById('editPay').value = idpay;
-    document.getElementById('editDel').value = iddel;
-    document.getElementById('editSta').value = state;
-    document.getElementById('editFpri').value = fpri.toFixed(2); 
-    document.getElementById('editDcom').value = delcom.toFixed(2); 
+function openEditModal(id, payment) {
+    // Verifica que el objeto payment no sea undefined
+    if (!payment) {
+        console.error('El objeto payment es undefined');
+        return; // Salir si payment no está definido
+    }
 
-    const formattedDate = new Date(date).toISOString().split('T')[0];
-    document.getElementById('editDate').value = formattedDate;
+    document.getElementById('editPaymentId').value = id;
 
-    const editModal = new bootstrap.Modal(document.getElementById('editSaleModal'));
+    // Validar si payment_date es válido
+    if (payment.payment_date) {
+        const paymentDate = new Date(payment.payment_date);
+        if (!isNaN(paymentDate.getTime())) {
+            // Restar un día
+            paymentDate.setDate(paymentDate.getDate() - 1);
+            
+            // Asignar la fecha ajustada al campo de entrada en formato YYYY-MM-DD
+            document.getElementById('editPayment_date').value = paymentDate.toISOString().split('T')[0];
+        } else {
+            console.error('Fecha inválida:', payment.payment_date);
+            document.getElementById('editPayment_date').value = ''; // Dejar vacío si no es válida
+        }
+    }
+
+
+    // Asegúrate de que el tipo de pago esté definido
+    if (payment.payment_type_id) {
+        document.getElementById('editPayType').value = payment.payment_type_id;
+    } else {
+        console.error('El ID del tipo de pago no está definido en payment:', payment);
+    }
+
+    // Asigna los demás valores del formulario
+    document.getElementById('editState').value = payment.state;
+    document.getElementById('editPayment_hour').value = payment.payment_hour;
+
+    // Mostrar el modal de edición
+    const editModal = new bootstrap.Modal(document.getElementById('editPaymentModal'));
     editModal.show();
 }
 
-// Manejar el envío del formulario de edición
-document.getElementById('editSaleForm').addEventListener('submit', function(event) {
-    event.preventDefault(); 
+document.getElementById('editPaymentForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevenir la recarga de la página
 
-    const id = document.getElementById('editSaleId').value; 
+    const id = document.getElementById('editPaymentId').value; // ID del pago que se está editando
 
     const formData = {
-        idcli: document.getElementById('editClient').value,
-        idpay: document.getElementById('editPay').value,
-        iddel: document.getElementById('editDel').value,
-        state: document.getElementById('editSta').value,
-        fpri: parseFloat(document.getElementById('editFpri').value).toFixed(2), 
-        delcom: parseFloat(document.getElementById('editDcom').value).toFixed(2), 
-        date: document.getElementById('editDate').value
+        payment_type_id: document.getElementById('editPayType').value, // ID del tipo de pago
+        state: document.getElementById('editState').value, // Estado del pago
+        payment_date: document.getElementById('editPayment_date').value, // Fecha del pago
+        payment_hour: document.getElementById('editPayment_hour').value // Hora del pago
     };
 
     console.log('Datos a enviar:', JSON.stringify(formData, null, 2));
 
-    fetch(`/sell/update/${id}`, {
+    // Realizar la solicitud PUT para actualizar los datos del pago
+    fetch(`/payment/update/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)  
+        body: JSON.stringify(formData) // Convertir los datos a JSON
     })
     .then(response => {
         if (response.ok) {
-            Swal.fire('Actualizado!', 'La venta ha sido actualizada.', 'success')
+            Swal.fire('Actualizado!', 'El pago ha sido actualizado.', 'success')
                 .then(() => {
-                    location.reload(); 
+                    location.reload(); // Recargar la página después de actualizar
                 });
         } else {
-            Swal.fire('Error!', 'No se pudo actualizar la venta.', 'error');
+            Swal.fire('Error!', 'No se pudo actualizar el pago.', 'error');
         }
+    })
+    .catch(error => {
+        console.error('Error al actualizar el pago:', error);
+        Swal.fire('Error!', 'Hubo un problema al actualizar el pago.', 'error');
     });
 });
 
+
+
 // Función para eliminar una venta
-function deleteSale(id) {
+function deletePayment(id) {
     Swal.fire({
         title: '¿Estás seguro?',
         text: "¡Esta acción no se puede deshacer!",
@@ -102,15 +124,15 @@ function deleteSale(id) {
         confirmButtonText: 'Sí, eliminar'
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`/sell/delete/${id}`, { method: 'DELETE' })
+            fetch(`/payment/delete/${id}`, { method: 'DELETE' })
                 .then(response => {
                     if (response.ok) {
-                        Swal.fire('Eliminado!', 'La venta ha sido eliminada.', 'success')
+                        Swal.fire('Eliminado!', 'El pago ha sido eliminado.', 'success')
                             .then(() => {
                                 location.reload();
                             });
                     } else {
-                        Swal.fire('Error!', 'No se pudo eliminar la venta.', 'error');
+                        Swal.fire('Error!', 'No se pudo eliminar el pago.', 'error');
                     }
                 });
         }

@@ -26,7 +26,7 @@ router.get('/ventas', async (req, res) => {
             LEFT JOIN delivery d ON s.delivery_id = d.delivery_id
             LEFT JOIN delivery_type dt ON d.delivery_type_id = dt.delivery_type_id
         `);
-        res.render('admin/sells/list', { sells: result });
+        res.render('admin/sells/list', { sells: result,  activeRoute: req.path });
     } catch (err) {
         console.error('Error al listar ventas:', err);  
         res.status(500).json({ message: err.message });

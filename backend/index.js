@@ -5,8 +5,14 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from "url";
 import Handlebars from 'handlebars';
 
-// IMPORTAR LAS RUTAS
+// RUTA DE VENTAS
 import sellRoutes from './routes/sell.routes.js';
+//RUTA DE DETALLE DE VENTAS
+import sellDetailRoutes from './routes/sell_detail.routes.js';
+//RUTA DE PAGOS
+import paymentRoutes from './routes/payment.routes.js';
+//RUTA DE TIPOS DE PAGO
+import paymentTypeRoutes from './routes/payment_type.routes.js';
 
 //RUTAS DE TIENDAS
 import shopRoutes from './routes/shop.routes.js';
@@ -41,7 +47,10 @@ app.engine('.hbs', engine({
         },
         formatTime: (time) => {
             const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            return new Date(time).toLocaleTimeString('es-ES', options); // Formato en español
+            return new Date(time).toLocaleTimeString('es-ES', options); 
+        },
+        eq: function (a, b) {
+            return a === b;
         }
         
     }
@@ -50,7 +59,6 @@ app.engine('.hbs', engine({
 app.set('view engine', '.hbs');
 
 
-// Registrar el helper 'json' después de definir el motor de vistas
 Handlebars.registerHelper('json', function(context) {
     return JSON.stringify(context);
 });
@@ -68,8 +76,13 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+//CHAVEZ
 app.use(sellRoutes); 
+app.use(sellDetailRoutes);
+app.use(paymentRoutes);
+app.use(paymentTypeRoutes);
 
+//NUÑEZ
 app.use(shopRoutes);
 app.use(deliveryTypeRoutes)
 app.use(deliveriesRoutes)
